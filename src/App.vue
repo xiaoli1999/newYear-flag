@@ -4,6 +4,7 @@
         <div class="bubble-flag-t">新年</div>
         <div class="bubble-flag-b">flag</div>
     </div>
+    <div class="flag-btn"><span>🌸</span></div>
 </template>
 
 <script lang="ts" setup>
@@ -189,7 +190,7 @@ onBeforeUnmount(() => clearInterval(timer))
     backdrop-filter: blur(0.5px);
     font-weight: 600;
     letter-spacing: 3px;
-    transition: all .24s;
+    transition: all 0.24s;
     animation: bubble-2023 2.8s linear infinite;
 }
 
@@ -207,7 +208,7 @@ onBeforeUnmount(() => clearInterval(timer))
     box-shadow: -1px 0 12px 1px #f4f4f4aa inset;
     backdrop-filter: blur(0.5px);
     flex-direction: column;
-    transition: all .24s;
+    transition: all 0.24s;
     animation: bubble-flag 2s linear infinite;
 
     > div {
@@ -260,6 +261,90 @@ onBeforeUnmount(() => clearInterval(timer))
     }
 }
 
+.flag-btn {
+    position: fixed;
+    right: -10px;
+    bottom: -10px;
+    z-index: 101;
+    width: 80px;
+    height: 80px;
+    border-radius: 100% 0 0;
+    box-shadow: 1px 1px 8px 1px #f7f8facc inset;
+    backdrop-filter: blur(1px);
+    cursor: pointer;
+    animation: flag-btn 6s linear infinite;
+
+    > span {
+        position: relative;
+        top: 42%;
+        left: 36%;
+        display: inline-block;
+        padding: 1px 0 1.5px 0.5px;
+        font-size: 26px;
+        text-align: center;
+        transition: font-size 0.24s;
+        transform-origin: center;
+        animation: flag-btn-text 2.4s linear infinite;
+    }
+
+    &::after {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 100% 0 0;
+        box-shadow: 1px 1px 8px 1px #f4f4f4ee inset;
+        content: "";
+        animation: flag-btn-wrap 1.5s linear infinite;
+        backdrop-filter: blur(1px);
+        cursor: default;
+    }
+}
+
+@keyframes flag-btn {
+    0%,
+    100% {
+        box-shadow: 1px 1px 8px 1px #f4f4f4ee inset;
+    }
+
+    16% {
+        box-shadow: 1px 1px 8px 1px #37c0fe inset;
+    }
+
+    32% {
+        box-shadow: 1px 1px 8px 1px #dd059c inset;
+    }
+
+    50% {
+        box-shadow: 1px 1px 8px 1px #f9edd5 inset;
+    }
+
+    68% {
+        box-shadow: 1px 1px 8px 1px #d49c7d inset;
+    }
+
+    84% {
+        box-shadow: 1px 1px 8px 1px #aeadb1 inset;
+    }
+}
+
+@keyframes flag-btn-wrap {
+    100% {
+        width: 160%;
+        height: 160%;
+        opacity: 0;
+    }
+}
+
+@keyframes flag-btn-text {
+    100% {
+        transform: rotateZ(1turn);
+    }
+}
+
 @media only screen and (max-width: 768px) {
     .bubble-2023 {
         top: 2%;
@@ -271,6 +356,10 @@ onBeforeUnmount(() => clearInterval(timer))
         top: 8%;
         right: 8%;
         transform: scale(0.6);
+    }
+
+    .flag-btn {
+        transform: scale(0.8);
     }
 }
 </style>
