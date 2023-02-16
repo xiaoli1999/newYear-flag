@@ -144,7 +144,11 @@ const setFlagBubbleAnimate = () => {
 
     setTimeout(() => flagElement.remove(), duration + 400)
 }
-/* 设置flag泡泡动画 */
+
+const adjustDevice = () => {
+    innerSize = getInnerSize()
+    isPc.value = innerSize.w > 768
+}
 
 let timer
 const start = () => {
@@ -153,7 +157,7 @@ const start = () => {
     timer = setInterval(() => {
         setWaterBubbleAnimate()
         setFlagBubbleAnimate()
-        if (n % 5 === 0) innerSize = getInnerSize()
+        if (n % 5 === 0) adjustDevice()
         n++
     }, isPc.value ? 420 : 840)
 }
@@ -161,8 +165,7 @@ const start = () => {
 onMounted(() => {
     progress.close()
 
-    innerSize = getInnerSize()
-    if (innerSize.w <= 768) isPc.value = false
+    adjustDevice()
 
     nextTick(() => start())
 })
@@ -182,7 +185,7 @@ onBeforeUnmount(() => clearInterval(timer))
     padding: 20px;
     width: 80px;
     height: 80px;
-    font-size: 28px;
+    font-size: 36px;
     color: #f4f4f4cc;
     background: #ffffff20;
     border-radius: 54% 46% 50% 50% / 52% 65% 35% 48%;
@@ -216,7 +219,7 @@ onBeforeUnmount(() => clearInterval(timer))
         justify-content: center;
         align-items: center;
         height: 30px;
-        font-size: 20px;
+        font-size: 26px;
         color: #f4f4f4cc;
         font-weight: 600;
         letter-spacing: 3px;
