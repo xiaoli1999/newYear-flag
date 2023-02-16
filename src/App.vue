@@ -85,7 +85,7 @@ const setWaterBubbleAnimate = () => {
 }
 
 /* 内置flag标签 */
-const flagList = ['暴富', '暴瘦', '脱单', '上岸', '加薪', '漫漫', '喜乐', '平安', '早睡', '早起', '升职', '退休', '躺平', '摆烂', '摸鱼', '搞钱', '发财', '温柔', '安康']
+const flagList = ['暴富', '暴瘦', '脱单', '上岸', '加薪', '漫漫', '喜乐', '平安', '早睡', '早起', '升职', '退休', '躺平', '摸鱼', '搞钱', '发财', '温柔']
 const selectFlagList = ref<string[]>(['暴富', '脱单', '上岸', '加薪', '漫漫', '喜乐', '升职', '搞钱'])
 const flagColorList = ['#e093d3', '#f36b9b', '#f4f4f4ee', '#37c0fe', '#dd059c', '#f9edd5', '#2ae39d', '#aeadb1', '#84f9a6', '#f9ab1a', '#d49c7d', '#5baf70']
 
@@ -104,7 +104,7 @@ const createFlagBubble = () => {
     const offsetList = ['-1px', '0', '1px']
     const offsetX = offsetList[Math.round(Math.random() * (offsetList.length - 1))]
     const offsetY = offsetList[Math.round(Math.random() * (offsetList.length - 1))]
-    const text = selectFlagList.value[Math.round(Math.random() * (selectFlagList.value.length - 1))]
+    const text = flagList[Math.round(Math.random() * (flagList.length - 1))]
 
     const flagElement: HTMLElement = document.createElement('div')
     flagElement.className = 'flag'
