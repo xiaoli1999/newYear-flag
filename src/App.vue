@@ -9,7 +9,6 @@
 <script lang="ts" setup>
 import { ref, onMounted, nextTick, onBeforeUnmount } from 'vue'
 import progress from './tools/progress'
-import { ElMessage } from 'element-plus'
 
 /* 初始化进度条 */
 progress.start()
