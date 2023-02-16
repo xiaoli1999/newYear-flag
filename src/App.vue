@@ -27,7 +27,7 @@ let innerSize: { w: number, h: number } = { w: 0, h: 0 }
  * @returns {{waterElement: HTMLDivElement, emoteParams: { left: number, bottom: number, opacity: number, fs: number }}}
  */
 const createWaterBubble = () => {
-    const sizeRange = isPc.value ? [16, 10] : [12, 8]
+    const sizeRange = isPc.value ? [14, 6] : [10, 6]
     const size = sizeRange[0] + Math.round(Math.random() * sizeRange[1])
     const left = Math.round(Math.random() * ((innerSize.w - (size / 2)) - (size / 2)))
     const bottom = -size
@@ -47,7 +47,10 @@ const createWaterBubble = () => {
     return { waterElement, waterParams: { size, left, bottom, opacity } }
 }
 
-/* 设置小泡泡动画 */
+/**
+ * @function setWaterBubbleAnimate 设置小水泡动画
+ * @description 设置小水泡动画并延时销毁
+ */
 const setWaterBubbleAnimate = () => {
     const { waterElement, waterParams: { size, left  } } = createWaterBubble()
 
@@ -55,10 +58,8 @@ const setWaterBubbleAnimate = () => {
 
     const leftRange = isPc.value ? [-80, 80] : [-40, 40]
     const endLeft = left + leftRange[Math.round(Math.random())]
-    // console.log(waterElement.style.height)
     const endBottom = innerSize.h + size + Math.round(Math.random() * 10)
-    // console.log(endBottom)
-    const duration = (isPc.value ? 8400 : 9600) + Math.round(Math.random() * 4000)
+    const duration = (isPc.value ? 10000 : 12000) + Math.round(Math.random() * 4000)
 
     waterElement.animate([{ bottom: `${ endBottom }px`, left: `${ endLeft }px`, opacity: '0.24' }], { easing: 'linear', duration, fill: 'forwards', iterations: 1 })
 
@@ -68,35 +69,50 @@ const setWaterBubbleAnimate = () => {
 /* 内置flag标签 */
 const flagList = ['暴富', '暴瘦', '脱单', '上岸', '加薪', '漫漫', '喜乐', '平安', '早睡', '早起', '升职', '退休', '躺平', '摆烂', '摸鱼', '搞钱', '发财', '温柔', '安康']
 const selectFlagList = ref<string[]>(['暴富', '脱单', '上岸', '加薪', '漫漫', '喜乐', '升职', '搞钱'])
-/* 创建flag泡泡 */
+const flagColorList = ['#e093d3', '#f36b9b', '#f4f4f4ee', '#37c0fe', '#dd059c', '#f9edd5', '#2ae39d', '#aeadb1', '#84f9a6', '#f9ab1a', '#d49c7d', '#5baf70']
+
 /**
- * @function createWaterBubble 生成随机小水泡
- * @description 生成随机小水泡及参数
+ * @function createFlagBubble 生成随机flag泡泡
+ * @description 生成随机flag泡泡及参数
  * @returns {{waterElement: HTMLDivElement, emoteParams: { left: number, bottom: number, opacity: number, fs: number }}}
  */
 const createFlagBubble = () => {
-    const sizeRange = isPc.value ? [16, 10] : [12, 8]
-    const size = sizeRange[0] + Math.round(Math.random() * sizeRange[1])
+    const fsRange = isPc.value ? [16, 20] : [12, 10]
+    const fontSize = fsRange[0] + Math.round(Math.random() * fsRange[1])
+    const size = fontSize * 3
     const left = Math.round(Math.random() * ((innerSize.w - (size / 2)) - (size / 2)))
     const bottom = -size
-    const opacity = Number(((Math.random() * 36 + 72) / 100).toFixed(2))
+    const color = flagColorList[Math.round(Math.random() * (flagColorList.length - 1))]
+    const offsetList = ['-1px', '0', '1px']
+    const offsetX = offsetList[Math.round(Math.random() * (offsetList.length - 1))]
+    const offsetY = offsetList[Math.round(Math.random() * (offsetList.length - 1))]
+    const text = selectFlagList.value[Math.round(Math.random() * (selectFlagList.value.length - 1))]
 
     const flagElement: HTMLElement = document.createElement('div')
-    flagElement.className = 'water'
+    flagElement.className = 'flag'
     flagElement.style.position = 'absolute'
     flagElement.style.width = `${ size }px`
     flagElement.style.height = `${ size }px`
     flagElement.style.bottom = `${ bottom }px`
     flagElement.style.left = `${ left }px`
+    flagElement.style.fontSize = `${ fontSize }px`
+    flagElement.style.color = `${ color }`
+    flagElement.style.fontWeight = '700'
+    flagElement.style.textAlign = 'center'
+    flagElement.style.lineHeight = `${ size }px`
     flagElement.style.borderRadius = '50%'
-    flagElement.style.boxShadow = `0 0 ${ size / 5 }px 1px #ffffffaa inset, -1.5px -1.5px ${ size / 10 }px 0 #ffffff80 inset`
-    flagElement.style.zIndex = '1'
+    flagElement.style.boxShadow = `${ offsetX } ${ offsetY } ${ size / 3.5 }px 1px ${ color } inset`
+    flagElement.style.zIndex = '100'
+    flagElement.innerText = text
 
-    return { flagElement, flagParams: { size, left, bottom, opacity } }
+    return { flagElement, flagParams: { size, left, bottom } }
 }
 
-/* 设置小泡泡动画 */
-const setflagBubbleAnimate = () => {
+/**
+ * @function setFlagBubbleAnimate 设置flag泡泡动画
+ * @description 设置flag泡泡动画并延时销毁
+ */
+const setFlagBubbleAnimate = () => {
     const { flagElement, flagParams: { size, left  } } = createFlagBubble()
 
     document.body.append(flagElement)
@@ -104,11 +120,11 @@ const setflagBubbleAnimate = () => {
     const leftRange = isPc.value ? [-80, 80] : [-40, 40]
     const endLeft = left + leftRange[Math.round(Math.random())]
     // console.log(waterElement.style.height)
-    const endBottom = innerSize.h + size + Math.round(Math.random() * 10)
+    const endBottom = innerSize.h + size
     // console.log(endBottom)
-    const duration = (isPc.value ? 8400 : 9600) + Math.round(Math.random() * 4000)
+    const duration = (isPc.value ? 8400 : 9600) + Math.round(Math.random() * 8000)
 
-    flagElement.animate([{ bottom: `${ endBottom }px`, left: `${ endLeft }px`, opacity: '0.24' }], { easing: 'linear', duration, fill: 'forwards', iterations: 1 })
+    flagElement.animate([{ bottom: `${ endBottom }px`, left: `${ endLeft }px` }], { easing: 'linear', duration, fill: 'forwards', iterations: 1 })
 
     setTimeout(() => flagElement.remove(), duration + 400)
 }
@@ -117,9 +133,10 @@ const setflagBubbleAnimate = () => {
 let timer
 const start = () => {
     let n = 0
+    clearInterval(timer)
     timer = setInterval(() => {
         setWaterBubbleAnimate()
-        setflagBubbleAnimate()
+        setFlagBubbleAnimate()
         if (n % 5 === 0) innerSize = getInnerSize()
         n++
     }, isPc.value ? 420 : 840)

@@ -1,7 +1,7 @@
 {
   "name": "newYear-flag",
   "private": true,
-  "version": "1.4.0",
+  "version": "0.1.0",
   "author": {
     "name": "黎",
     "email": "22708206@qq.com",
@@ -18,7 +18,7 @@
     "lint": "eslint src/**/*.{js,jsx,vue,ts,tsx} --fix",
     "lint:css": "stylelint **/*.{vue,css,sass,scss,less} --fix",
     "prepare": "husky install",
-    "deploy": "gh-pages -d rabbit"
+    "deploy": "gh-pages -d flag"
   },
   "dependencies": {
     "element-plus": "^2.2.28",
