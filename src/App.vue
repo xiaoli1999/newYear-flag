@@ -8,12 +8,30 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, nextTick, onBeforeUnmount } from 'vue'
-import { judgePC } from '@/tools/common'
 import progress from './tools/progress'
 import { ElMessage } from 'element-plus'
 
 /* 初始化进度条 */
 progress.start()
+
+/**
+ * @function judgePC 判断是当前浏览器信息是否为pc
+ * @return { Boolean } 返回是否是pc
+ */
+const judgePC = () => {
+    let userAgent
+    if (window && window.navigator) {
+        userAgent = window.navigator.userAgent
+    } else {
+        return true
+    }
+
+    const agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPod', 'iPad']
+    for (let i = 0; i < agents.length; i++) {
+        if (userAgent.indexOf(agents[i]) >= 0) return false
+    }
+    return true
+}
 
 let isPc = ref<boolean>(judgePC())
 
@@ -74,7 +92,7 @@ const flagColorList = ['#e093d3', '#f36b9b', '#f4f4f4ee', '#37c0fe', '#dd059c', 
 /**
  * @function createFlagBubble 生成随机flag泡泡
  * @description 生成随机flag泡泡及参数
- * @returns {{waterElement: HTMLDivElement, emoteParams: { left: number, bottom: number, opacity: number, fs: number }}}
+ * @returns {{flagElement: HTMLDivElement, flagParams: { size: number, bottom: number, left: number }}}
  */
 const createFlagBubble = () => {
     const fsRange = isPc.value ? [16, 20] : [12, 10]
@@ -119,9 +137,7 @@ const setFlagBubbleAnimate = () => {
 
     const leftRange = isPc.value ? [-80, 80] : [-40, 40]
     const endLeft = left + leftRange[Math.round(Math.random())]
-    // console.log(waterElement.style.height)
     const endBottom = innerSize.h + size
-    // console.log(endBottom)
     const duration = (isPc.value ? 8400 : 9600) + Math.round(Math.random() * 8000)
 
     flagElement.animate([{ bottom: `${ endBottom }px`, left: `${ endLeft }px` }], { easing: 'linear', duration, fill: 'forwards', iterations: 1 })
@@ -172,9 +188,10 @@ onBeforeUnmount(() => clearInterval(timer))
     border-radius: 54% 46% 50% 50% / 52% 65% 35% 48%;
     box-shadow: 0 0 16px 1px #f4f4f4aa inset;
     backdrop-filter: blur(0.5px);
-    animation: bubble-2023 2.8s linear infinite;
     font-weight: 600;
     letter-spacing: 3px;
+    transition: all .24s;
+    animation: bubble-2023 2.8s linear infinite;
 }
 
 .bubble-flag {
@@ -191,6 +208,7 @@ onBeforeUnmount(() => clearInterval(timer))
     box-shadow: -1px 0 12px 1px #f4f4f4aa inset;
     backdrop-filter: blur(0.5px);
     flex-direction: column;
+    transition: all .24s;
     animation: bubble-flag 2s linear infinite;
 
     > div {
@@ -240,6 +258,20 @@ onBeforeUnmount(() => clearInterval(timer))
 
     66% {
         border-radius: 30% 70% 77% 23% / 19% 56% 44% 81%;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .bubble-2023 {
+        top: 2%;
+        left: 8%;
+        transform: scale(0.6);
+    }
+
+    .bubble-flag {
+        top: 8%;
+        right: 8%;
+        transform: scale(0.6);
     }
 }
 </style>
