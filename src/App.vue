@@ -4,6 +4,10 @@
         <div class="bubble-flag-t">新年</div>
         <div class="bubble-flag-b">flag</div>
     </div>
+    <div class="test">
+        <span>暴富</span>
+        <div></div>
+    </div>
     <div class="flag-btn"><span>🌸</span></div>
 </template>
 
@@ -167,13 +171,74 @@ onMounted(() => {
 
     adjustDevice()
 
-    nextTick(() => start())
+    // nextTick(() => start())
 })
 
 onBeforeUnmount(() => clearInterval(timer))
 </script>
 
 <style lang="less">
+.test {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 480px auto 0;
+    border-radius: 50%;
+    color: #f4f4f4;
+
+    > span {
+        position: absolute;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        //animation: test 2.4s linear infinite;
+    }
+
+    > div {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        box-shadow: -2px -2px 16px 1px #f4f4f4 inset;
+        animation: test-text 2s linear infinite;
+        opacity: 1;
+    }
+}
+
+
+
+@keyframes test {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .6;
+
+    }
+}
+
+@keyframes test-text {
+    50% {
+        //border-radius: 24%;
+    }
+    100% {
+        transform: rotateZ(1turn);
+    }
+}
 .bubble-2023 {
     position: absolute;
     top: 5%;
