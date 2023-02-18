@@ -4,10 +4,6 @@
         <div class="bubble-flag-t">新年</div>
         <div class="bubble-flag-b">flag</div>
     </div>
-    <div class="test">
-        <span>暴富</span>
-        <div></div>
-    </div>
     <div class="flag-btn"><span>🌸</span></div>
 </template>
 
@@ -49,7 +45,7 @@ let innerSize: { w: number, h: number } = { w: 0, h: 0 }
  * @returns {{waterElement: HTMLDivElement, emoteParams: { left: number, bottom: number, opacity: number, fs: number }}}
  */
 const createWaterBubble = () => {
-    const sizeRange = isPc.value ? [14, 6] : [10, 6]
+    const sizeRange = isPc.value ? [10, 10] : [8, 8]
     const size = sizeRange[0] + Math.round(Math.random() * sizeRange[1])
     const left = Math.round(Math.random() * ((innerSize.w - (size / 2)) - (size / 2)))
     const bottom = -size
@@ -89,7 +85,7 @@ const setWaterBubbleAnimate = () => {
 }
 
 /* 内置flag标签 */
-const flagList = ['暴富', '暴瘦', '脱单', '上岸', '加薪', '漫漫', '喜乐', '平安', '早睡', '早起', '升职', '退休', '躺平', '摸鱼', '搞钱', '发财', '温柔']
+const flagList = ['暴富', '暴瘦', '脱单', '上岸', '加薪', '漫漫', '喜乐', '平安', '早睡', '早起', '升职', '退休', '躺平', '摸鱼', '搞钱', '发财', '温柔', '采黎']
 const selectFlagList = ref<string[]>(['暴富', '脱单', '上岸', '加薪', '漫漫', '喜乐', '升职', '搞钱'])
 const flagColorList = ['#e093d3', '#f36b9b', '#f4f4f4ee', '#37c0fe', '#dd059c', '#f9edd5', '#2ae39d', '#aeadb1', '#84f9a6', '#f9ab1a', '#d49c7d', '#5baf70']
 
@@ -99,13 +95,13 @@ const flagColorList = ['#e093d3', '#f36b9b', '#f4f4f4ee', '#37c0fe', '#dd059c', 
  * @returns {{flagElement: HTMLDivElement, flagParams: { size: number, bottom: number, left: number }}}
  */
 const createFlagBubble = () => {
-    const fsRange = isPc.value ? [16, 20] : [12, 10]
+    const fsRange = isPc.value ? [14, 10] : [12, 8]
     const fontSize = fsRange[0] + Math.round(Math.random() * fsRange[1])
     const size = fontSize * 3
     const left = Math.round(Math.random() * ((innerSize.w - (size / 2)) - (size / 2)))
     const bottom = -size
     const color = flagColorList[Math.round(Math.random() * (flagColorList.length - 1))]
-    const offsetList = ['-1px', '0', '1px']
+    const offsetList = ['-2px', '-1px', '0', '1px', '2px']
     const offsetX = offsetList[Math.round(Math.random() * (offsetList.length - 1))]
     const offsetY = offsetList[Math.round(Math.random() * (offsetList.length - 1))]
     const text = flagList[Math.round(Math.random() * (flagList.length - 1))]
@@ -123,7 +119,8 @@ const createFlagBubble = () => {
     flagElement.style.textAlign = 'center'
     flagElement.style.lineHeight = `${ size }px`
     flagElement.style.borderRadius = '50%'
-    flagElement.style.boxShadow = `${ offsetX } ${ offsetY } ${ size / 3.5 }px 1px ${ color } inset`
+    flagElement.style.boxShadow = `${ offsetX } ${ offsetY } ${ (size / 3.5).toFixed(2) }px ${ size >= 20 ? 2 : 1 }px ${ color } inset`
+    flagElement.style.opacity = '0.36'
     flagElement.style.zIndex = '100'
     flagElement.innerText = text
 
@@ -142,10 +139,15 @@ const setFlagBubbleAnimate = () => {
     const leftRange = isPc.value ? [-80, 80] : [-40, 40]
     const endLeft = left + leftRange[Math.round(Math.random())]
     const endBottom = innerSize.h + size
-    const duration = (isPc.value ? 8400 : 9600) + Math.round(Math.random() * 8000)
+    const duration = (isPc.value ? 12000 : 14000) + Math.round(Math.random() * 8000)
 
     flagElement.animate([{ bottom: `${ endBottom }px`, left: `${ endLeft }px` }], { easing: 'linear', duration, fill: 'forwards', iterations: 1 })
 
+    flagElement.onclick = () => {
+        if (!flagElement.className.includes('active')) {
+            flagElement.setAttribute('class', 'flag active')
+        }
+    }
     setTimeout(() => flagElement.remove(), duration + 400)
 }
 
@@ -171,74 +173,13 @@ onMounted(() => {
 
     adjustDevice()
 
-    // nextTick(() => start())
+    nextTick(() => start())
 })
 
 onBeforeUnmount(() => clearInterval(timer))
 </script>
 
 <style lang="less">
-.test {
-    position: relative;
-    width: 80px;
-    height: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    font-weight: 600;
-    margin: 480px auto 0;
-    border-radius: 50%;
-    color: #f4f4f4;
-
-    > span {
-        position: absolute;
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
-        //animation: test 2.4s linear infinite;
-    }
-
-    > div {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        box-shadow: -2px -2px 16px 1px #f4f4f4 inset;
-        animation: test-text 2s linear infinite;
-        opacity: 1;
-    }
-}
-
-
-
-@keyframes test {
-    0%, 100% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: .6;
-
-    }
-}
-
-@keyframes test-text {
-    50% {
-        //border-radius: 24%;
-    }
-    100% {
-        transform: rotateZ(1turn);
-    }
-}
 .bubble-2023 {
     position: absolute;
     top: 5%;
@@ -396,6 +337,22 @@ onBeforeUnmount(() => clearInterval(timer))
 
     84% {
         box-shadow: 1px 1px 8px 1px #aeadb1 inset;
+    }
+}
+
+.flag {
+    transition: all 0.24s ease-in-out;
+    cursor: pointer;
+
+    &.active {
+        opacity: 1 !important;
+        animation: flag 1.8s linear infinite;
+    }
+}
+
+@keyframes flag {
+    50% {
+        transform: scale(1.2);
     }
 }
 
