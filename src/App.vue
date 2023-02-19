@@ -4,7 +4,19 @@
         <div class="bubble-flag-t">新年</div>
         <div class="bubble-flag-b">flag</div>
     </div>
-    <div class="flag-btn"><span>🌸</span></div>
+    <div class="flag-btn" @click="popupShow = true"><span>🌸</span></div>
+    <div :class="`popup-wrap ${ popupShow ? 'show' : 'hidden' }`" @click="clickPopupWrap">
+        <div :class="`popup ${ popupShow ? 'show' : 'hidden' }`">
+            <h2>选择flag<span>至少选择一个</span></h2>
+            <div class="flag-tag-list">
+                <div v-for="(tag, tagIndex) in flagList" :key="tag + tagIndex" :class="`flag-tag ${ selectFlagList.includes(tag) ? 'active' : '' }`" @click.stop="clickTag(tag)">{{ tag }}</div>
+            </div>
+            <div class="popup-panel">
+                <div class="cancel" @click.stop="popupShow = false">取消</div>
+                <div class="sure" @click.stop="confirmFlag">确定</div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -104,7 +116,7 @@ const createFlagBubble = () => {
     const offsetList = ['-2px', '-1px', '0', '1px', '2px']
     const offsetX = offsetList[Math.round(Math.random() * (offsetList.length - 1))]
     const offsetY = offsetList[Math.round(Math.random() * (offsetList.length - 1))]
-    const text = flagList[Math.round(Math.random() * (flagList.length - 1))]
+    const text = selectFlagList.value[Math.round(Math.random() * (selectFlagList.value.length - 1))]
 
     const flagElement: HTMLElement = document.createElement('div')
     flagElement.className = 'flag'
@@ -120,7 +132,7 @@ const createFlagBubble = () => {
     flagElement.style.lineHeight = `${ size }px`
     flagElement.style.borderRadius = '50%'
     flagElement.style.boxShadow = `${ offsetX } ${ offsetY } ${ (size / 3.5).toFixed(2) }px ${ size >= 20 ? 2 : 1 }px ${ color } inset`
-    flagElement.style.opacity = '0.36'
+    flagElement.style.opacity = '0.48'
     flagElement.style.zIndex = '100'
     flagElement.innerText = text
 
@@ -168,6 +180,20 @@ const start = () => {
     }, isPc.value ? 420 : 840)
 }
 
+const popupShow = ref<boolean>(false)
+const clickPopupWrap = () => popupShow.value = false
+
+const clickTag = (tag: string) => {
+    const index = selectFlagList.value.findIndex(i => i === tag)
+    index === -1 ? selectFlagList.value.push(tag) : selectFlagList.value.splice(index, 1)
+}
+
+const confirmFlag = () => {
+    if (!selectFlagList.value.length) return alert('请选择你的flag')
+
+    start()
+    popupShow.value = false
+}
 onMounted(() => {
     progress.close()
 
@@ -368,6 +394,132 @@ console.log('%c 新年flag🌈 | 黎 | https://github.com/xiaoli1999/newYear-fla
 @keyframes flag-btn-text {
     100% {
         transform: rotateZ(1turn);
+    }
+}
+
+.popup-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: all 0.48s;
+
+    &.show {
+        z-index: 1000;
+        background: #00000080;
+    }
+
+    &.hidden {
+        z-index: -1;
+        background: transparent;
+    }
+}
+
+.popup {
+    position: relative;
+    padding: 16px;
+    width: 680px;
+    background: #f4f4f496;
+    border-radius: 8px;
+    box-shadow: 1px 1px 8px 1px #ffffff80 inset;
+    transition: all 0.48s;
+    box-sizing: border-box;
+
+    &.show {
+        top: 50%;
+        left: 50%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    &.hidden {
+        top: 100%;
+        left: 100%;
+        opacity: 0;
+        transform: translate(0) scale(0);
+    }
+
+    > h2 {
+        font-size: 24px;
+        color: #222;
+
+        > span {
+            margin-left: 8px;
+            font-size: 14px;
+            color: #dfdfdf;
+            line-height: 24px;
+        }
+    }
+
+    .flag-tag-list {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        margin: 16px auto;
+        flex-wrap: wrap;
+
+        .flag-tag {
+            padding: 6px 12px;
+            margin: 0 12px 12px 0;
+            font-size: 16px;
+            color: #303133ee;
+            border: 1px solid #303133ee;
+            border-radius: 4px;
+            transition: all 0.24s;
+            letter-spacing: 1px;
+            cursor: pointer;
+            font-weight: 600;
+
+            &:hover {
+                color: #303133;
+                border: 1px solid #303133;
+                transform: translateY(-4px);
+            }
+
+            &.active {
+                color: #f4f4f4;
+                background: #323232;
+                border: 1px solid transparent;
+            }
+        }
+    }
+
+    .popup-panel {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        > div {
+            padding: 6px 12px;
+            margin-left: 12px;
+            font-size: 16px;
+            border-radius: 4px;
+            transition: all 0.24s;
+            letter-spacing: 1px;
+            cursor: pointer;
+            font-weight: 600;
+
+            &.cancel {
+                color: #606266;
+                border: 1px solid #606266;
+
+                &:hover {
+                    color: #000;
+                    border: 1px solid #000;
+                }
+            }
+
+            &.sure {
+                color: #e5e5e5;
+                border: 1px solid #e5e5e5;
+
+                &:hover {
+                    color: #fff;
+                    border: 1px solid #fff;
+                }
+            }
+        }
     }
 }
 
