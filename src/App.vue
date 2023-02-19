@@ -177,6 +177,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => clearInterval(timer))
+console.log('%c 新年flag🌈 | 黎 | https://github.com/xiaoli1999/newYear-flag ', 'color: #f4f4f4;background: #444; padding:5px 0;border-radius:2px;')
 </script>
 
 <style lang="less">
@@ -358,8 +359,8 @@ onBeforeUnmount(() => clearInterval(timer))
 
 @keyframes flag-btn-wrap {
     100% {
-        width: 160%;
-        height: 160%;
+        width: 180%;
+        height: 180%;
         opacity: 0;
     }
 }
