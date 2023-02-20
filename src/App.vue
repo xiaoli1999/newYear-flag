@@ -5,15 +5,15 @@
         <div class="bubble-flag-b">flag</div>
     </div>
     <div class="flag-btn" @click="popupShow = true"><span>🌸</span></div>
-    <div :class="`popup-wrap ${ popupShow ? 'show' : 'hidden' }`" @click="clickPopupWrap">
+    <div :class="`popup-wrap ${ popupShow ? 'show' : 'hidden' }`" @click.self="clickPopupWrap">
         <div :class="`popup ${ popupShow ? 'show' : 'hidden' }`">
             <h2>选择flag<span>至少选择一个</span></h2>
             <div class="flag-tag-list">
-                <div v-for="(tag, tagIndex) in flagList" :key="tag + tagIndex" :class="`flag-tag ${ selectFlagList.includes(tag) ? 'active' : '' }`" @click.stop="clickTag(tag)">{{ tag }}</div>
+                <div v-for="(tag, tagIndex) in flagList" :key="tag + tagIndex" :class="`flag-tag ${ selectFlagList.includes(tag) ? 'active' : '' }`" @click="clickTag(tag)">{{ tag }}</div>
             </div>
             <div class="popup-panel">
-                <div class="cancel" @click.stop="popupShow = false">取消</div>
-                <div class="sure" @click.stop="confirmFlag">确定</div>
+                <div class="cancel" @click="popupShow = false">取消</div>
+                <div class="sure" @click="confirmFlag">确定</div>
             </div>
         </div>
     </div>
