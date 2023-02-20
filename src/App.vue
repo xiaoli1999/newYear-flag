@@ -97,8 +97,11 @@ const setWaterBubbleAnimate = () => {
 }
 
 /* 内置flag标签 */
-const flagList = ['暴富', '暴瘦', '脱单', '上岸', '加薪', '漫漫', '喜乐', '平安', '早睡', '早起', '升职', '退休', '躺平', '摸鱼', '搞钱', '发财', '温柔', '采黎']
-const selectFlagList = ref<string[]>(['暴富', '脱单', '上岸', '加薪', '漫漫', '喜乐', '升职', '搞钱'])
+const flagList = [
+    '暴富', '暴瘦', '脱单', '上岸', '加薪', '漫漫', '喜乐', '平安', '早睡', '早起', '升职', '退休', '养生', '自信', '稳重',
+    '躺平', '摸鱼', '搞钱', '发财', '温柔', '采黎', '连胜', '自律', '减肥', '攒钱', '修心', '健身'
+]
+const selectFlagList = ref<string[]>(['暴富', '脱单', '上岸', '加薪', '喜乐', '平安', '漫漫', '采黎', '发财', '升职', '搞钱', '自律'])
 const flagColorList = ['#e093d3', '#f36b9b', '#f4f4f4ee', '#37c0fe', '#dd059c', '#f9edd5', '#2ae39d', '#aeadb1', '#84f9a6', '#f9ab1a', '#d49c7d', '#5baf70']
 
 /**
@@ -185,12 +188,15 @@ const clickPopupWrap = () => popupShow.value = false
 
 const clickTag = (tag: string) => {
     const index = selectFlagList.value.findIndex(i => i === tag)
-    index === -1 ? selectFlagList.value.push(tag) : selectFlagList.value.splice(index, 1)
+    if (index === -1)  {
+        selectFlagList.value.push(tag)
+    } else {
+        if (selectFlagList.value.length === 1) return alert('flag至少选择一个')
+        selectFlagList.value.splice(index, 1)
+    }
 }
 
 const confirmFlag = () => {
-    if (!selectFlagList.value.length) return alert('请选择你的flag')
-
     start()
     popupShow.value = false
 }
@@ -542,7 +548,7 @@ console.log('%c 新年flag🌈 | 黎 | https://github.com/xiaoli1999/newYear-fla
 
     .popup {
         padding: 8px;
-        width: 320px;
+        width: 330px;
         border-radius: 6px;
         box-shadow: 1px 1px 8px 1px #ffffff80 inset;
 
@@ -562,7 +568,7 @@ console.log('%c 新年flag🌈 | 黎 | https://github.com/xiaoli1999/newYear-fla
 
             .flag-tag {
                 padding: 4px 8px;
-                margin: 8px;
+                margin: 4px;
                 font-size: 12px;
                 border-radius: 2px;
                 transition: all 0.24s;
