@@ -539,5 +539,48 @@ console.log('%c 新年flag🌈 | 黎 | https://github.com/xiaoli1999/newYear-fla
     .flag-btn {
         transform: scale(0.8);
     }
+
+    .popup {
+        padding: 8px;
+        width: 320px;
+        border-radius: 6px;
+        box-shadow: 1px 1px 8px 1px #ffffff80 inset;
+
+        > h2 {
+            font-size: 18px;
+            padding-top: 8px;
+
+            > span {
+                margin-left: 4px;
+                font-size: 12px;
+            }
+        }
+
+        .flag-tag-list {
+            margin: 12px auto;
+            justify-content: flex-start;
+
+            .flag-tag {
+                padding: 4px 8px;
+                margin: 8px;
+                font-size: 12px;
+                border-radius: 2px;
+                transition: all 0.24s;
+            }
+        }
+
+        .popup-panel {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            > div {
+                padding: 4px 8px;
+                margin-left: 8px;
+                font-size: 12px;
+                border-radius: 2px;
+            }
+        }
+    }
 }
 </style>
